@@ -1,12 +1,12 @@
-$(function (){
+$(function () {
     // 登录
-    $('#reg').on('click',()=>{
+    $('#reg').on('click', () => {
         $('.reg').show();
         $('.login').hide();
     })
-    
+
     // 注册
-    $('#login').on('click',()=>{
+    $('#login').on('click', () => {
         $('.reg').hide();
         $('.login').show()
     })
@@ -16,26 +16,26 @@ $(function (){
     const layer = layui.layer
     form.verify({
         //密码验证规则
-        pwd:[/^[\S]{6,12}$/, '密码必须6到12位，且不能出现空格'],
+        pwd: [/^[\S]{6,12}$/, '密码必须6到12位，且不能出现空格'],
         //验证两次密码是否一致
-        repwd:function (value) {
+        repwd: function (value) {
             const pwd = $('.reg [name=password]').val()
-            if(pwd !== value){
+            if (pwd !== value) {
                 return '两次密码不一致'
             }
         }
     })
 
     //发请求注册
-    $('#form_reg').on('submit',(e)=>{
+    $('#form_reg').on('submit', (e) => {
         e.preventDefault();
         const data = {
-            username:$('#form_reg [name=username]').val(),
-            password:$('#form_reg [name=password]').val()
+            username: $('#form_reg [name=username]').val(),
+            password: $('#form_reg [name=password]').val()
         }
-        $.post('/api/reguser',data,(res)=>{
-            const {status,msg} = res;
-            if(status !== 0) {
+        $.post('/api/reguser', data, (res) => {
+            const { status, msg } = res;
+            if (status !== 0) {
                 return layer.msg(msg)
             }
             layer.msg('注册成功')
@@ -44,20 +44,20 @@ $(function (){
         })
     })
     //发送请求登录
-    $('#form_login').submit(function (e){
+    $('#form_login').submit(function (e) {
         e.preventDefault()
         $.ajax({
-            type:'post',
-            url:'/api/login',
-            data:$(this).serialize(),
-            success:function (res){
-                const {status,msg,token} = res
-                if(status !== 0) {
+            type: 'post',
+            url: '/api/login',
+            data: $(this).serialize(),
+            success: function (res) {
+                const { status, msg, token } = res
+                if (status !== 0) {
                     return layer.msg(msg)
                 }
                 layer.msg('登录成功')
                 //在本地存储token
-                localStorage.setItem('token',token)
+                localStorage.setItem('token', token)
                 //跳转页面
                 location.href = '/index.html'
             }
