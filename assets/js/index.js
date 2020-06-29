@@ -1,6 +1,6 @@
 $(function (){
     //调用获取用户信息
-    getUserinfo();
+    initgetUserinfo();
     //点击退出
     const layer = layui.layer
     $('#logout').on('click',function (){
@@ -13,21 +13,20 @@ $(function (){
     })
 })
 //封装获取用户基本信息
-function getUserinfo() {
+function initgetUserinfo() {
     $.ajax({
         type:'get',
         url:'/my/userinfo',
         //配置请求头
         //headers:{Authorization:localStorage.getItem('token')},
         success:function (res){
-            console.log(res);
-            
             const {status,msg} = res;
             if(status !== 0) return layui.layer.msg(msg)
             //渲染用户头像
             renderAvatar(res.data)
         }
     })
+
 }
 
 //封装渲染用户头像
@@ -61,4 +60,6 @@ function renderAvatar(user){
         $('.layui-nav-img').attr('src',user.user_pic).show();
         $('.text-avatar').hide()
       }
+
+    
 }
